@@ -227,7 +227,8 @@ model.evaluate(testing_generator)
 
 
 
-
+# # TRYING to test some outside images
+#load images
 daisy1 = cv2.imread("/content/daisy1.jpg")
 daisy2 = cv2.imread("/content/daisy2.jpg")
 daisy3 = cv2.imread("/content/daisy3.jpg")
@@ -253,25 +254,34 @@ tulip4 = cv2.imread("/content/tulip4.jpg")
 tulip5 = cv2.imread("/content/tulip5.jpg")
 
 
-
+#all images stored ina list which will be iterated further...
 c = [daisy1,daisy2,daisy3,daisy4,daisy5,dandelion1,dandelion2,dandelion3,dandelion4,dandelion5,rose1,rose2,sunflower1,sunflower2,sunflower3,sunflower4,sunflower5,tulip2,tulip3,tulip4,tulip5]
+
 flower = {0:'daisy',1:'dandelion',2:'rose',3:'sunflower',4:'tulip'}
 
 
 
-
+# Below code shows each of the above 23 images uploaded from outside
+# And predicts the class of flower ( i.e. rose/sunflower ...)
 for i in c:
     img = i
-    plt.figure()
-    plt.imshow(img)
+    #plt.figure()
+    #plt.imshow(img)
 
     img = cv2.resize(i, (180, 180))
     img = np.reshape(img, (1, 180, 180, 3))
-    print(flower[np.argmax(model.predict(img))])
+    #print(flower[np.argmax(model.predict(img))])
+### Around 80% of images were predicted correct ....
 
 
 
 
+
+
+###### Predicting Your Own Image ######
+##                                  ##
+
+# run the following code , upload image and see the prediction along with image
 import numpy as np
 
 from google.colab import files
@@ -282,8 +292,10 @@ uploaded = files.upload()
 for fn in uploaded.keys():
     # predicting images
     path = '/content/' + fn
+    # Preprocessing image before model.predict
     img = image.load_img(path, target_size=(180, 180))
     plt.imshow(img)
+
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     images = np.vstack([x])
@@ -291,3 +303,4 @@ for fn in uploaded.keys():
     classes = model.predict(images)
 
     print(flower[np.argmax(classes)])
+# The name of flower uploaded will bw printed !!!!!!!!!!!
